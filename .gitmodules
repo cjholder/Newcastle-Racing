@@ -1,0 +1,25 @@
+
+[submodule "MPCC"]
+path = MPCC
+url = https://github.com/xieyixian/newcastal_racingteam/MPCC.git
+
+[submodule "eufs_rviz_plugins"]
+path = eufs_rviz_plugins
+url = https://github.com/xieyixian/newcastal_racingteam/eufs_rviz_plugins.git
+
+
+[submodule "eufs_sim"]
+path = eufs_sim
+url = https://github.com/xieyixian/newcastal_racingteam/eufs_sim.git
+
+
+[submodule "ft-fsd-path-planning"]
+path = ft-fsd-path-planning
+url = https://github.com/xieyixian/newcastal_racingteam/ft-fsd-path-planning.git
+
+[submodule "eufs_sim/eufs_msgs"]
+path = eufs_sim/eufs_msgs
+url = https://github.com/xieyixian/newcastal_racingteam/eufs_sim/eufs_msgs.git
+
+
+
