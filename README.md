@@ -24,7 +24,7 @@ Here's a process description for setting up and managing your ROS2 environment, 
     /opt/ros/galactic/setup.bash
     ```
 4. **Local Environment Configuration:**
-   After building the packages, source the local setup script to update your shell with the environment settings of the newly built packages.
+   After building the packages, source the local setup script to update your shell with the environment settings of the newly built packages. Not tested
    ```bash
    source install/local_setup.bash
    ```
