@@ -19,7 +19,7 @@ Here's a process description for setting up and managing your ROS2 environment, 
    ```bash
    source /opt/ros/foxy/setup.bash
    ```
-   If you are in a ROS2 Galactic environment, you may need to change the file setup.py, CMakeList, package.xml.Not tested
+   If you are in a ROS2 Galactic environment, you may need to change the file setup.py, CMakeList, package.xml in MPCC AND ft-fsd-path-planning.Not tested
     ```bash
     source /opt/ros/galactic/setup.bash
     ```
