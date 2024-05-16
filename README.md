@@ -1,4 +1,3 @@
-Here's a process description for setting up and managing your ROS2 environment, based on the commands you've provided:
 
 ### Initial Setup and Environment Configuration
 
