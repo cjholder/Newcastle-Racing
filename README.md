@@ -1,4 +1,4 @@
-# newcastal_racingteam
+
 cd ~/ros2_foxy_workspace // Change to your ROS2 Foxy workspace directory in your home folder
 colcon build // Build all packages in the ROS2 workspace
 source /opt/ros/foxy/setup.bash // Source the setup file for ROS2 Foxy to configure the environment
