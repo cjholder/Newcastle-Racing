@@ -19,12 +19,12 @@ Here's a process description for setting up and managing your ROS2 environment, 
    ```bash
    source /opt/ros/foxy/setup.bash
    ```
-   If you are in a ROS2 Galactic environment, you may need to change the file setup.py, CMakeList, package.xml
+   If you are in a ROS2 Galactic environment, you may need to change the file setup.py, CMakeList, package.xml.Not tested
     ```bash
     /opt/ros/galactic/setup.bash
     ```
 4. **Local Environment Configuration:**
-   After building the packages, source the local setup script to update your shell with the environment settings of the newly built packages. Not tested
+   After building the packages, source the local setup script to update your shell with the environment settings of the newly built packages. 
    ```bash
    source install/local_setup.bash
    ```
