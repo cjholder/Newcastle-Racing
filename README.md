@@ -108,6 +108,7 @@
    Go back to your workspace root and access the `ft-fsd-path-planning` directory. Trying to build this directory with the original instructions given on their GitHub will cause a plethora of errors. Simply install the Python requirements from the `requirements.txt` and this should be enough for the package to build and work correctly.
 
    ```bash
+   cd ~/your_workspace/ft-fsd-path-planning
    pip install -r requirements.txt
    ```
 
