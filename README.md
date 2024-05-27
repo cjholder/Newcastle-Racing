@@ -39,7 +39,9 @@
    ```
    This should build without error, else `colcon build` will fail in your workspace.
 
-   We need to make some adjustments in `mpcc_controller.cpp`.
+   > [!IMPORTANT]
+   > You don't need to update the `mpcc_controller.cpp` under `~/your_workspace/MPCC/C++` as the path is now
+   > dynamic and not hard-coded (see code below for quick reference) - I kept the code block to avoid confusion
 
    ```bash
    cd ~/your_workspace/MPCC/C++
@@ -48,12 +50,33 @@
    Near the top of the file:
    
    ```cpp
+   std::string getCurrentWorkingDirectory() {
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        return std::string(cwd);
+    } else {
+        perror("getcwd() error");
+        return "";
+    }
+   }
+
+   std::string getParentPath(const std::string& path) {
+      std::size_t pos = path.find_last_of('/');
+      if (pos != std::string::npos) {
+         std::size_t pos2 = path.find_last_of('/', pos - 1);
+         if (pos2 != std::string::npos) {
+               return path.substr(0, pos2);
+         }
+      }
+      return "";
+   }
+
    class MPCCController : public rclcpp::Node {
    public:
       MPCCController()
          : Node("mpcc_controller_node"),
          last_steering_angle(0.0),
-         track("/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/track.json"), 
+         track(getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/track.json"), 
          total_distance(0.0), 
          D(0.5),
          path_direction(0.0, 0.0){
@@ -63,7 +86,7 @@
 
    private:
       void initializeSubscribersAndPublishers() {
-         auto jsonConfig = loadConfig("/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/config.json");
+         auto jsonConfig = loadConfig(getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/config.json");
 
          // 参数初始化
          mpc = std::make_unique<mpcc::MPC>(jsonConfig["n_sqp"], jsonConfig["n_reset"], jsonConfig["sqp_mixing"], jsonConfig["Ts"], loadJsonPaths());
@@ -93,16 +116,14 @@
 
       mpcc::PathToJson loadJsonPaths() {
          return {
-               "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/model.json",
-               "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/cost.json",
-               "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/bounds.json",
-               "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/track.json",
-               "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/normalization.json"
+               getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/model.json",
+               getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/cost.json",
+               getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/bounds.json",
+               getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/track.json",
+               getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/normalization.json"
          };
       }
    ```
-
-   <b>Replace the starting bit of all the paths here with the path to your workspace. </b>
 
 1. **Install requirements in `ft-fsd-path-planning`:**
    Go back to your workspace root and access the `ft-fsd-path-planning` directory. Trying to build this directory with the original instructions given on their GitHub will cause a plethora of errors. Simply install the Python requirements from the `requirements.txt` and this should be enough for the package to build and work correctly.
