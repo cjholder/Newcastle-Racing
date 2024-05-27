@@ -40,8 +40,7 @@
    This should build without error, else `colcon build` will fail in your workspace.
 
    > [!IMPORTANT]
-   > You don't need to update the `mpcc_controller.cpp` under `~/your_workspace/MPCC/C++` as the path is now
-   > dynamic and not hard-coded (see code below for quick reference) - I kept the code block to avoid confusion
+   > You don't need to update the `mpcc_controller.cpp` under `~/your_workspace/MPCC/C++` as the path is now dynamic and not hard-coded (see code below for quick reference) - I kept the code block to avoid confusion
 
    ```bash
    cd ~/your_workspace/MPCC/C++
