@@ -15,12 +15,33 @@
 
 using json = nlohmann::json;
 
+std::string getCurrentWorkingDirectory() {
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        return std::string(cwd);
+    } else {
+        perror("getcwd() error");
+        return "";
+    }
+}
+
+std::string getParentPath(const std::string& path) {
+    std::size_t pos = path.find_last_of('/');
+    if (pos != std::string::npos) {
+        std::size_t pos2 = path.find_last_of('/', pos - 1);
+        if (pos2 != std::string::npos) {
+            return path.substr(0, pos2);
+        }
+    }
+    return "";
+}
+
 class MPCCController : public rclcpp::Node {
 public:
     MPCCController()
         : Node("mpcc_controller_node"),
         last_steering_angle(0.0),
-        track("/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/track.json"), 
+        track(getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/track.json"), 
         total_distance(0.0), 
         D(0.5),
         path_direction(0.0, 0.0){
@@ -30,7 +51,7 @@ public:
 
 private:
     void initializeSubscribersAndPublishers() {
-        auto jsonConfig = loadConfig("/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/config.json");
+        auto jsonConfig = loadConfig(getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/config.json");
 
         // 参数初始化
         mpc = std::make_unique<mpcc::MPC>(jsonConfig["n_sqp"], jsonConfig["n_reset"], jsonConfig["sqp_mixing"], jsonConfig["Ts"], loadJsonPaths());
@@ -60,11 +81,11 @@ private:
 
     mpcc::PathToJson loadJsonPaths() {
         return {
-            "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/model.json",
-            "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/cost.json",
-            "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/bounds.json",
-            "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/track.json",
-            "/home/xyh/ros2_foxy_workspace/install/mpcc_control/share/mpcc_control/Params/normalization.json"
+            getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/model.json",
+            getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/cost.json",
+            getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/bounds.json",
+            getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/track.json",
+            getParentPath(getCurrentWorkingDirectory())+"/install/mpcc_control/share/mpcc_control/Params/normalization.json"
         };
     }
 
